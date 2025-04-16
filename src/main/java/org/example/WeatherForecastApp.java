@@ -20,13 +20,13 @@ public class WeatherForecastApp {
             }
 
             try {
-                if (!city.matches("[А-Яа-яЁё]+")) {
-                    throw new MyCustomException();
+                if (!city.matches("[А-Яа-яЁё\\s]+")) {
+                    throw new InvalidCityNameException();
                 }
 
                 List<Integer> temperatures = getOrGenerateTemperatures(city);
                 System.out.println("Прогноз температуры для города " + city + ": " + temperatures);
-            } catch (MyCustomException e) {
+            } catch (InvalidCityNameException e) {
                 System.out.println("Произошла ошибка: " + e.getMessage());
             } catch (Exception e) {
                 System.out.println("Произошла непредвиденная ошибка: " + e.getMessage());
