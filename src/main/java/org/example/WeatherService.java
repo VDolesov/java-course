@@ -29,10 +29,10 @@ public class WeatherService {
     }
 
     private List<Integer> generateForecast() {
-        List<Integer> temps = new ArrayList<>();
+        List<Integer> temperatures = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            temps.add(random.nextInt(20));
+            temperatures.add(random.nextInt(20));
         }
-        return temps;
+        return temperatures;
     }
 }

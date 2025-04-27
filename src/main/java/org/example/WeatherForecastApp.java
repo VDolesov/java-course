@@ -23,9 +23,8 @@ public class WeatherForecastApp {
                 List<Integer> forecast = service.getForecast(city);
                 System.out.println("Прогноз температуры для города " + city + ": " + forecast);
             } catch (InvalidCityNameException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                System.out.println("Произошла ошибка: " + e.getMessage());
+                System.err.println(e.getMessage());
+
             }
         }
     }
