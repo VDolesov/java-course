@@ -50,7 +50,6 @@ public class WeatherService {
             return data;
         }
 
-        // Генерация 3 случайных температур от -10 до +35
         String temperatures = IntStream.range(0, 3)
                 .map(i -> random.nextInt(46) - 10)
                 .mapToObj(String::valueOf)
@@ -62,5 +61,13 @@ public class WeatherService {
 
         logger.info(">>> [LOG][{}] Новый город. Температуры: {}", requestId, temperatures);
         return newData;
+    }
+
+    public void evictCacheForCity(String city) {
+        logger.info(">>> [CACHE] Очистка кэша для города: {}", city);
+    }
+
+    public void clearAllCache() {
+        logger.info(">>> [CACHE] Полная очистка кэша");
     }
 }
