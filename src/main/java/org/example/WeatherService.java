@@ -16,7 +16,7 @@ public class WeatherService {
         }
 
         if (repository.hasForecast(city)) {
-            return repository.findForecast(city);
+            return repository.getForecast(city);
         } else {
             List<Integer> forecast = generateForecast();
             repository.saveForecast(city, forecast);
