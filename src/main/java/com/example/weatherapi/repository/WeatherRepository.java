@@ -24,7 +24,7 @@ public class WeatherRepository {
                 jdbc.update(updateSql, cityName);
                 return stringToTemperatures(tempStr);
             }
-            return List.of(); // пустой список — прогноз не найден
+            return List.of();
         });
     }
 
