@@ -18,16 +18,17 @@ public class WeatherRepository {
     }
 
     public void saveForecast(String cityName, List<Integer> temperatures) {
-        String sql = "INSERT INTO weather_forecasts (city_name, temperatures, created_at, updated_at) " +
-                "VALUES (?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) " +
+        String sql = "INSERT INTO weather_forecasts (city_name, temperatures) " +
+                "VALUES (?, ?) " +
                 "ON CONFLICT (city_name) DO UPDATE SET temperatures = ?, updated_at = CURRENT_TIMESTAMP";
 
         try (Connection conn = connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
+            Array sqlArray = conn.createArrayOf("INTEGER", temperatures.toArray());
             stmt.setString(1, cityName);
-            stmt.setString(2, temperaturesToString(temperatures));
-            stmt.setString(3, temperaturesToString(temperatures));
+            stmt.setArray(2, sqlArray);
+            stmt.setArray(3, sqlArray);
 
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -48,10 +49,11 @@ public class WeatherRepository {
             ResultSet rs = selectStmt.executeQuery();
 
             if (rs.next()) {
-                String tempStr = rs.getString("temperatures");
-                temperatures = stringToTemperatures(tempStr);
+                Array sqlArray = rs.getArray("temperatures");
+                Integer[] tempArray = (Integer[]) sqlArray.getArray();
+                temperatures = Arrays.asList(tempArray);
 
-                updateStmt.setString(1, cityName); // обновление даты и счётчика
+                updateStmt.setString(1, cityName);
                 updateStmt.executeUpdate();
             }
 
@@ -75,18 +77,5 @@ public class WeatherRepository {
             e.printStackTrace();
             return false;
         }
-    }
-
-    private String temperaturesToString(List<Integer> temperatures) {
-        return String.join(",", temperatures.stream().map(String::valueOf).toArray(String[]::new));
-    }
-
-    private List<Integer> stringToTemperatures(String tempStr) {
-        List<Integer> temperatures = new ArrayList<>();
-        String[] tempArray = tempStr.split(",");
-        for (String temp : tempArray) {
-            temperatures.add(Integer.parseInt(temp));
-        }
-        return temperatures;
     }
 }

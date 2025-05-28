@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS weather_forecasts (
     id SERIAL PRIMARY KEY,
     city_name TEXT NOT NULL UNIQUE,
-    temperatures TEXT NOT NULL,
+    temperatures INTEGER[] NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_accessed_at TIMESTAMP,
