@@ -14,9 +14,9 @@ public class GlobalExceptionHandler {
         HttpStatus status = (HttpStatus) ex.getStatusCode();
 
         ApiError error = new ApiError(
-                status.value(),         // 400, 404 и т.д.
-                status.toString(),      // "400 BAD_REQUEST"
-                ex.getReason()          // твоё сообщение, например "Город слишком короткий"
+                status.value(),
+                status.toString(),
+                ex.getReason()
         );
 
         return new ResponseEntity<>(error, status);

@@ -1,23 +1,30 @@
 package com.example.weatherapi.controller;
 
-import com.example.weatherapi.model.WeatherData;
+import com.example.weatherapi.dto.WeatherResponse;
 import com.example.weatherapi.service.WeatherService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/weather")
 public class WeatherController {
 
-    private final WeatherService service;
+    private final WeatherService weatherService;
 
-    @Autowired
-    public WeatherController(WeatherService service) {
-        this.service = service;
+    public WeatherController(WeatherService weatherService) {
+        this.weatherService = weatherService;
     }
 
     @GetMapping("/{city}")
-    public WeatherData getWeather(@PathVariable String city) {
-        return service.getWeatherForCity(city);
+    public ResponseEntity<?> getWeather(@PathVariable String city) {
+        try {
+            WeatherResponse response = weatherService.getWeatherForCity(city);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Ошибка: " + e.getMessage());
+        }
     }
 }

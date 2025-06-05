@@ -1,22 +1,28 @@
 package com.example.weatherapi.service;
 
-import io.lettuce.core.ClientOptions;
-import org.springframework.boot.autoconfigure.data.redis.LettuceClientConfigurationBuilderCustomizer;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.serializer.*;
 
 import java.time.Duration;
 
 @Configuration
+@EnableCaching
 public class RedisConfig {
 
     @Bean
-    public LettuceClientConfigurationBuilderCustomizer lettuceClientCustomizer() {
-        return builder -> builder
-                .commandTimeout(Duration.ofSeconds(5))
-                .shutdownTimeout(Duration.ofMillis(100))
-                .clientOptions(ClientOptions.builder()
-                        .autoReconnect(true)
-                        .build());
+    public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        RedisSerializer<Object> jsonSerializer = new GenericJackson2JsonRedisSerializer();
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(60))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jsonSerializer));
+
+        return RedisCacheManager.builder(connectionFactory)
+                .cacheDefaults(config)
+                .build();
     }
 }

@@ -1,9 +1,0 @@
-CREATE TABLE weather_forecasts (
-    id BIGSERIAL PRIMARY KEY,
-    city_name TEXT NOT NULL UNIQUE,
-    temperatures TEXT NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_accessed_at TIMESTAMPTZ,
-    request_count INTEGER DEFAULT 0
-);
