@@ -1,4 +1,4 @@
-package com.example.weatherapi.service;
+package com.example.weatherapi.config;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;

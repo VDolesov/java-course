@@ -52,7 +52,6 @@ public class AuthService {
         AppUser user = new AppUser();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
-        user.setRole("ROLE_USER");
         userRepository.save(user);
     }
 }

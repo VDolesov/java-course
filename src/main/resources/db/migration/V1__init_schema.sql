@@ -8,7 +8,6 @@ CREATE TABLE weather_forecast (
     pressure VARCHAR(255),
     wind VARCHAR(255),
     wind_direction VARCHAR(255),
-    precipitation VARCHAR(255),
     cloud_cover VARCHAR(255),
     visibility VARCHAR(255),
 
